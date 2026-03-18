@@ -2,11 +2,11 @@ var express = require("express");
 var router = express.Router();
 let userModel = require("../schemas/users");
 let { CreateAnUserValidator, validatedResult, ModifyAnUser } = require('../utils/validateHandler')
+let userController = require('../controllers/users')
 
 
 router.get("/", async function (req, res, next) {
-  let users = await userModel
-    .find({ isDeleted: false })
+  let users =  await userController.GetAllUser()
   res.send(users);
 });
 
@@ -27,19 +27,10 @@ router.get("/:id", async function (req, res, next) {
 
 router.post("/", CreateAnUserValidator, validatedResult, async function (req, res, next) {
   try {
-    let newItem = new userModel({
-      username: req.body.username,
-      password: req.body.password,
-      email: req.body.email,
-      fullName: req.body.fullName,
-      avatarUrl: req.body.avatarUrl,
-      status: req.body.status,
-      role: req.body.role,
-      loginCount: req.body.loginCount
-    });
-
-    await newItem.save();
-
+    let newItem = await userController.CreateAnUser(
+      req.body.username,req.body.password,req.body.email,req.body.role,
+      req.body.fullName,req.body.avatarUrl,req.body.status, req.body.loginCount
+    )
     // populate cho đẹp
     let saved = await userModel
       .findById(newItem._id)
