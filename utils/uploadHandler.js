@@ -19,8 +19,22 @@ let filterImage = function (req, file, cb) {
         cb(new Error("file khong hop le"))
     }
 }
-module.exports = multer({
-    storage: storageSetting,
-    limits: 5 * 1024 * 1024,
-    fileFilter: filterImage
-})
+let filterExcel = function (req, file, cb) {
+    if (file.mimetype.includes("spreadsheetml.sheet")) {
+        cb(null, true)
+    } else {
+        cb(new Error("file khong hop le"))
+    }
+}
+module.exports = {
+    uploadImage: multer({
+        storage: storageSetting,
+        limits: 5 * 1024 * 1024,
+        fileFilter: filterImage
+    }),
+    uploadExcel: multer({
+        storage: storageSetting,
+        limits: 5 * 1024 * 1024,
+        fileFilter: filterExcel
+    })
+}
