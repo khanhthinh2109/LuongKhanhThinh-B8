@@ -1,0 +1,12 @@
+{
+  "name": "import-users",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "node import-users.js"
+  },
+  "dependencies": {
+    "csv-parse": "^5.5.6",
+    "nodemailer": "^6.9.16",
+    "dotenv": "^16.4.7"
+  }
+}
